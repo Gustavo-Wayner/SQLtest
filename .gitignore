@@ -1,0 +1,38 @@
+# --- Visual Studio / C# ---
+
+# Build outputs
+bin/
+obj/
+[Bb]uild/
+[Bb]uilds/
+artifacts/
+
+# Visual Studio settings
+.vs/
+*.user
+*.userosscache
+*.suo
+*.cache
+*.pdb
+*.opendb
+
+# NuGet
+*.nupkg
+packages/
+*.snupkg
+*.nupkg
+
+# Logs / Crash dumps
+*.log
+*.dmp
+
+# Backup & temporary files
+*.tmp
+*.temp
+*.bak
+*.DS_Store
+
+# --- WPF/XAML specific ---
+*.g.cs
+*.g.i.cs
+*.xaml.cs~

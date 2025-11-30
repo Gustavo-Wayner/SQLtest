@@ -1,0 +1,5 @@
+CREATE TABLE Tasks
+(
+    Id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    Title   TEXT NOT NULL
+);
