@@ -11,12 +11,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using SQLitePCL;
 
 namespace SQLtest;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
     public ObservableCollection<Task> tasks = new();
@@ -38,6 +36,63 @@ public partial class MainWindow : Window
         command.ExecuteNonQuery();
         DataB.ItemsSource = tasks;
         LoadTasks();
+    }
+
+    public void InsertTask()
+    {
+        if (string.IsNullOrWhiteSpace(Input.Text))
+        {
+            MessageBox.Show("Empty");
+            return;
+        }
+
+        using SqliteConnection connection = new SqliteConnection("Data Source=data.db");
+        connection.Open();
+
+        using SqliteCommand command = connection.CreateCommand();
+        command.CommandText = $"INSERT INTO {tableNames[0]} (Title) VALUES ($title);";
+        command.Parameters.AddWithValue("$title", Input.Text.Trim());
+        command.ExecuteNonQuery();
+
+        Input.Text = "";
+        LoadTasks();
+    }
+
+    public void DeleteTask()
+    {
+        var selected = DataB.SelectedItem as Task;
+        if (selected == null)
+        {
+            MessageBox.Show("Select a task to delete");
+            return;
+        }
+
+        using SqliteConnection connection = new SqliteConnection("Data Source=data.db");
+        connection.Open();
+
+        using SqliteCommand command = connection.CreateCommand();
+        command.CommandText = $"DELETE FROM {tableNames[0]} WHERE Id = $id;";
+        command.Parameters.AddWithValue("$id", selected.Id);
+        command.ExecuteNonQuery();
+
+        LoadTasks();
+    }
+
+    public void OnEnterPress(Object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            e.Handled = true;
+            InsertTask();
+        }
+    }
+    public void OnDelPress(Object sender, KeyEventArgs e)
+    {
+        e.Handled = true;
+        if (e.Key == Key.Delete)
+        {
+            DeleteTask();
+        }
     }
 
     public void LoadTasks()
@@ -62,43 +117,13 @@ public partial class MainWindow : Window
             tasks.Add(task);
         }
     }
-    public void InsertTask(object sender, RoutedEventArgs e)
+    public void OnInsertClick(object sender, RoutedEventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(Input.Text))
-        {
-            MessageBox.Show("Empty");
-            return;
-        }
-
-        using SqliteConnection connection = new SqliteConnection("Data Source=data.db");
-        connection.Open();
-
-        using SqliteCommand command = connection.CreateCommand();
-        command.CommandText = $"INSERT INTO {tableNames[0]} (Title) VALUES ($title);";
-        command.Parameters.AddWithValue("$title", Input.Text.Trim());
-        command.ExecuteNonQuery();
-
-        Input.Text = "";
-        LoadTasks();
+        InsertTask();
     }
 
-    public void DeleteTask(object sender, RoutedEventArgs e)
+    public void OnDeleteClick(object sender, RoutedEventArgs e)
     {
-        var selected = DataB.SelectedItem as Task;
-        if (selected == null)
-        {
-            MessageBox.Show("Select a task to delete");
-            return;
-        }
-
-        using SqliteConnection connection = new SqliteConnection("Data Source=data.db");
-        connection.Open();
-
-        using SqliteCommand command = connection.CreateCommand();
-        command.CommandText = $"DELETE FROM {tableNames[0]} WHERE Id = $id;";
-        command.Parameters.AddWithValue("$id", selected.Id);
-        command.ExecuteNonQuery();
-
-        LoadTasks();
+        DeleteTask();
     }
 }

@@ -6,10 +6,10 @@
     xmlns:local="clr-namespace:SQLtest" mc:Ignorable="d" Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="86,10,0,0" TextWrapping="Wrap" Text="Insert title" VerticalAlignment="Top" Height="30" Width="92" FontSize="20"/>
-        <TextBox x:Name="Input" HorizontalAlignment="Left" Margin="197,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="316" Height="30" FontSize="20" TextAlignment="Justify"/>
-        <Button Content="Send" HorizontalAlignment="Left" Margin="514,10,0,0" VerticalAlignment="Top" Height="30" Width="72" FontSize="20" Click="InsertTask"/>
-        <Button Content="Delete" HorizontalAlignment="Left" Margin="588,10,0,0" VerticalAlignment="Top" Height="30" Width="72" FontSize="20" Click="DeleteTask"/>
-        <DataGrid x:Name="DataB" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0, 50, 0, 0"/>
-        
+        <TextBox x:Name="Input" HorizontalAlignment="Left" Margin="197,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="316" Height="30" FontSize="20" TextAlignment="Justify" KeyDown="OnEnterPress"/>
+        <Button Content="Send" HorizontalAlignment="Left" Margin="514,10,0,0" VerticalAlignment="Top" Height="30" Width="72" FontSize="20" Click="OnInsertClick"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="588,10,0,0" VerticalAlignment="Top" Height="30" Width="72" FontSize="20" Click="OnDeleteClick"/>
+        <DataGrid x:Name="DataB" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0, 50, 0, 0" CanUserDeleteRows="False" PreviewKeyDown="OnDelPress"/>
+
     </Grid>
 </Window>
